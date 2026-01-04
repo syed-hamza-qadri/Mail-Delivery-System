@@ -104,7 +104,26 @@ The project includes Jest tests for critical logic:
 Run tests before deployment to ensure core functionality works.
 
 ## Deployment
-This project is structured for Vercel (there is a `vercel.json`), but it can be deployed to any Node hosting that supports Next.js. Ensure you set the same environment variables in your hosting provider.
+This project is structured for Vercel (there is a `vercel.json`), but it can be deployed to any Node hosting that supports Next.js.
+
+### **⚠️ IMPORTANT: Vercel Environment Variables**
+**Your deployment will NOT save/fetch data unless you set environment variables in Vercel.** The `.env.local` file only works locally and is not deployed.
+
+**Steps to fix deployment issues:**
+
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Select your project
+3. Navigate to **Settings → Environment Variables**
+4. Add these critical variables:
+   - `SUPABASE_URL` = your Supabase project URL (e.g., https://xyz.supabase.co)
+   - `SUPABASE_SERVICE_KEY` = your Supabase service role key
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = your Supabase anon key (if client-side usage needed)
+5. Add any email provider keys you use (e.g., `RESEND_API_KEY`, `SENDGRID_API_KEY`, etc.)
+6. **Redeploy** your application (the environment variables only apply to new deployments)
+
+Once redployed with proper environment variables set, your API endpoints will connect to the database and data will be saved/fetched correctly.
+
+If you still see "JSON.parse: unexpected character" errors or empty API responses after redeployment, check Vercel's **Function Logs** tab for detailed error messages.
 
 ## Files removed
 - Build artifacts and local files (e.g. `.next/`, local DB and logs) have been removed from the workspace. Source files, the SQL schema, and the optional migration script remain.

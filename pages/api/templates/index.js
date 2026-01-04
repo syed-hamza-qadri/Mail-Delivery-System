@@ -3,6 +3,12 @@ import { supabase } from '../../../lib/supabase';
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
+      if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
+        console.error('❌ Missing Supabase environment variables in templates API');
+        return res.status(500).json({ 
+          error: 'Database not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables in Vercel.' 
+        });
+      }
       const { data, error } = await supabase
         .from('email_templates')
         .select('*')
@@ -10,7 +16,8 @@ export default async function handler(req, res) {
       if (error) throw error;
       res.status(200).json(data || []);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error('Templates API error:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch templates' });
     }
   } else if (req.method === 'POST') {
     try {
