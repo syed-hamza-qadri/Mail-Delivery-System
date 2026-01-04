@@ -1,0 +1,10 @@
+{
+  "email_templates": [],
+  "contacts": [],
+  "sent_emails": [],
+  "_nextIds": {
+    "email_templates": 1,
+    "contacts": 1,
+    "sent_emails": 1
+  }
+}
